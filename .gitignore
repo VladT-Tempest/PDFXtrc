@@ -1,0 +1,8 @@
+.qodo
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+pyvenv.cfg
+

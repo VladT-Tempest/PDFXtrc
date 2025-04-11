@@ -27,8 +27,8 @@ interfaz = gr.Interface(
     fn=procesar_pdf,
     inputs=gr.File(label="Selecciona un archivo PDF"),
     outputs="text",
-    title="Conversor de PDF a JPG",
-    description="Convierte un archivo PDF en imágenes JPG y las guarda en una carpeta.",
+    title="Commercial Invoice data extraction",
+    description="Takes a PDF file with commercial invoices and converts it to JPG images, then extracts the data from the images.",
     theme="default"
 )
 

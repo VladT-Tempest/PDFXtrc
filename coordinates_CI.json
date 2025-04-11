@@ -1,0 +1,349 @@
+{
+    "boxes": [
+        {
+            "id": "1",
+            "label": "Farm",
+            "x": "950.00",
+            "y": "158.33",
+            "width": "1040.00",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "2",
+            "label": "Farm_ruc",
+            "x": "623.33",
+            "y": "220.00",
+            "width": "380.00",
+            "height": "66.67",
+            "confidence": null
+        },
+        {
+            "id": "3",
+            "label": "Farm_address",
+            "x": "946.67",
+            "y": "286.67",
+            "width": "1040.00",
+            "height": "53.33",
+            "confidence": null
+        },
+        {
+            "id": "4",
+            "label": "Farm_city_country",
+            "x": "870.00",
+            "y": "385.00",
+            "width": "873.33",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "5",
+            "label": "Farm_phone",
+            "x": "583.33",
+            "y": "451.67",
+            "width": "306.67",
+            "height": "63.33",
+            "confidence": null
+        },
+        {
+            "id": "6",
+            "label": "Client",
+            "x": "951.67",
+            "y": "631.67",
+            "width": "1056.67",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "7",
+            "label": "Client_address",
+            "x": "953.33",
+            "y": "696.67",
+            "width": "1066.67",
+            "height": "60.00",
+            "confidence": null
+        },
+        {
+            "id": "8",
+            "label": "Client_city_country",
+            "x": "621.67",
+            "y": "761.67",
+            "width": "390.00",
+            "height": "56.67",
+            "confidence": null
+        },
+        {
+            "id": "9",
+            "label": "Client_phone",
+            "x": "618.33",
+            "y": "828.33",
+            "width": "390.00",
+            "height": "56.67",
+            "confidence": null
+        },
+        {
+            "id": "A",
+            "label": "invoice_date",
+            "x": "1846.67",
+            "y": "151.67",
+            "width": "220.00",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "B",
+            "label": "invoice_number",
+            "x": "1868.33",
+            "y": "255.00",
+            "width": "223.33",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "C",
+            "label": "invoice_country",
+            "x": "1840.00",
+            "y": "308.33",
+            "width": "186.67",
+            "height": "36.67",
+            "confidence": null
+        },
+        {
+            "id": "D",
+            "label": "Fue",
+            "x": "1970.00",
+            "y": "401.67",
+            "width": "460.00",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "E",
+            "label": "Air_way_bill",
+            "x": "1991.67",
+            "y": "453.33",
+            "width": "330.00",
+            "height": "40.00",
+            "confidence": null
+        },
+        {
+            "id": "F",
+            "label": "House_Air_way_bill",
+            "x": "2061.67",
+            "y": "505.00",
+            "width": "250.00",
+            "height": "43.33",
+            "confidence": null
+        },
+        {
+            "id": "G",
+            "label": "Airline",
+            "x": "1963.33",
+            "y": "553.33",
+            "width": "466.67",
+            "height": "46.67",
+            "confidence": null
+        },
+        {
+            "id": "H",
+            "label": "Boxes_01",
+            "x": "210.00",
+            "y": "1048.33",
+            "width": "180.00",
+            "height": "56.67",
+            "confidence": null
+        },
+        {
+            "id": "I",
+            "label": "Pieces_01",
+            "x": "448.33",
+            "y": "1050.00",
+            "width": "256.67",
+            "height": "53.33",
+            "confidence": null
+        },
+        {
+            "id": "J",
+            "label": "Product_01",
+            "x": "881.67",
+            "y": "1048.33",
+            "width": "536.67",
+            "height": "56.67",
+            "confidence": null
+        },
+        {
+            "id": "K",
+            "label": "Tariff_number_01",
+            "x": "1318.33",
+            "y": "1053.33",
+            "width": "283.33",
+            "height": "60.00",
+            "confidence": null
+        },
+        {
+            "id": "L",
+            "label": "Stems_01",
+            "x": "1775.00",
+            "y": "1048.33",
+            "width": "130.00",
+            "height": "56.67",
+            "confidence": null
+        },
+        {
+            "id": "M",
+            "label": "Unit_price_01",
+            "x": "1980.00",
+            "y": "1048.33",
+            "width": "186.67",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "N",
+            "label": "Extended_price_01",
+            "x": "2210.00",
+            "y": "1051.67",
+            "width": "206.67",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "O",
+            "label": "Boxes_02",
+            "x": "210.00",
+            "y": "1108.33",
+            "width": "186.67",
+            "height": "43.33",
+            "confidence": null
+        },
+        {
+            "id": "P",
+            "label": "Pieces_02",
+            "x": "446.67",
+            "y": "1108.33",
+            "width": "260.00",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "Q",
+            "label": "Product_02",
+            "x": "886.67",
+            "y": "1103.33",
+            "width": "540.00",
+            "height": "46.67",
+            "confidence": null
+        },
+        {
+            "id": "R",
+            "label": "Tariff_number_02",
+            "x": "1316.67",
+            "y": "1110.00",
+            "width": "273.33",
+            "height": "46.67",
+            "confidence": null
+        },
+        {
+            "id": "S",
+            "label": "Stems_02",
+            "x": "1781.67",
+            "y": "1106.67",
+            "width": "143.33",
+            "height": "46.67",
+            "confidence": null
+        },
+        {
+            "id": "T",
+            "label": "Unit_price_02",
+            "x": "1978.33",
+            "y": "1105.00",
+            "width": "196.67",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "U",
+            "label": "Extended_price_02",
+            "x": "2211.67",
+            "y": "1106.67",
+            "width": "216.67",
+            "height": "40.00",
+            "confidence": null
+        },
+        {
+            "id": "V",
+            "label": "Boxes_03",
+            "x": "208.33",
+            "y": "1161.67",
+            "width": "183.33",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "W",
+            "label": "Pieces_03",
+            "x": "446.67",
+            "y": "1165.00",
+            "width": "260.00",
+            "height": "56.67",
+            "confidence": null
+        },
+        {
+            "id": "X",
+            "label": "Product_03",
+            "x": "888.33",
+            "y": "1161.67",
+            "width": "543.33",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "Y",
+            "label": "Tarif_number_03",
+            "x": "1318.33",
+            "y": "1166.67",
+            "width": "270.00",
+            "height": "53.33",
+            "confidence": null
+        },
+        {
+            "id": "Z",
+            "label": "Stems_03",
+            "x": "1781.67",
+            "y": "1158.33",
+            "width": "143.33",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "a",
+            "label": "Unit_price_03",
+            "x": "1985.00",
+            "y": "1158.33",
+            "width": "203.33",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "b",
+            "label": "Extended_price_03",
+            "x": "2216.67",
+            "y": "1158.33",
+            "width": "226.67",
+            "height": "43.33",
+            "confidence": null
+        },
+        {
+            "id": "c",
+            "label": "Forwarder",
+            "x": "1786.67",
+            "y": "1486.67",
+            "width": "1086.67",
+            "height": "426.67",
+            "confidence": null
+        }
+    ],
+    "height": 3509,
+    "key": "pagina_1.jpg",
+    "width": 2480
+}

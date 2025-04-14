@@ -1,3 +1,4 @@
 gradio
 pytesseract
 pdf2image
+python3-pandas

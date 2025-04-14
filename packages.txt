@@ -1,3 +1,2 @@
 tesseract-ocr-all
 poppler-utils
-python3-pandas

@@ -10,6 +10,12 @@ def procesar_pdf(pdf_archivo):
     if not os.path.exists(carpeta_salida):
         os.makedirs(carpeta_salida)
 
+    # Si en carpeta_salida ya hay archivos, eliminarlos
+    for archivo in os.listdir(carpeta_salida):
+        archivo_path = os.path.join(carpeta_salida, archivo)
+        if os.path.isfile(archivo_path):
+            os.remove(archivo_path)
+
     # Convertir el PDF a imágenes
     paginas = convert_from_path(pdf_archivo, dpi=300)
     

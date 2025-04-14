@@ -8,3 +8,10 @@ pyvenv.cfg
 
 # Carpeta de trabajo
 invoices/
+
+# Log de errores
+*.log
+
+# archivos de resultados
+data/
+

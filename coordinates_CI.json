@@ -66,9 +66,9 @@
         {
             "id": "8",
             "label": "Client_city_country",
-            "x": "621.67",
-            "y": "761.67",
-            "width": "390.00",
+            "x": "951.33",
+            "y": "750.00",
+            "width": "1056.00",
             "height": "56.67",
             "confidence": null
         },
@@ -93,9 +93,9 @@
         {
             "id": "B",
             "label": "invoice_number",
-            "x": "1868.33",
+            "x": "1888.33",
             "y": "255.00",
-            "width": "223.33",
+            "width": "238.00",
             "height": "50.00",
             "confidence": null
         },
@@ -175,7 +175,7 @@
             "id": "K",
             "label": "Tariff_number_01",
             "x": "1318.33",
-            "y": "1053.33",
+            "y": "1048.33",
             "width": "283.33",
             "height": "60.00",
             "confidence": null
@@ -206,144 +206,8 @@
             "width": "206.67",
             "height": "50.00",
             "confidence": null
-        },
-        {
-            "id": "O",
-            "label": "Boxes_02",
-            "x": "210.00",
-            "y": "1108.33",
-            "width": "186.67",
-            "height": "43.33",
-            "confidence": null
-        },
-        {
-            "id": "P",
-            "label": "Pieces_02",
-            "x": "446.67",
-            "y": "1108.33",
-            "width": "260.00",
-            "height": "50.00",
-            "confidence": null
-        },
-        {
-            "id": "Q",
-            "label": "Product_02",
-            "x": "886.67",
-            "y": "1103.33",
-            "width": "540.00",
-            "height": "46.67",
-            "confidence": null
-        },
-        {
-            "id": "R",
-            "label": "Tariff_number_02",
-            "x": "1316.67",
-            "y": "1110.00",
-            "width": "273.33",
-            "height": "46.67",
-            "confidence": null
-        },
-        {
-            "id": "S",
-            "label": "Stems_02",
-            "x": "1781.67",
-            "y": "1106.67",
-            "width": "143.33",
-            "height": "46.67",
-            "confidence": null
-        },
-        {
-            "id": "T",
-            "label": "Unit_price_02",
-            "x": "1978.33",
-            "y": "1105.00",
-            "width": "196.67",
-            "height": "50.00",
-            "confidence": null
-        },
-        {
-            "id": "U",
-            "label": "Extended_price_02",
-            "x": "2211.67",
-            "y": "1106.67",
-            "width": "216.67",
-            "height": "40.00",
-            "confidence": null
-        },
-        {
-            "id": "V",
-            "label": "Boxes_03",
-            "x": "208.33",
-            "y": "1161.67",
-            "width": "183.33",
-            "height": "50.00",
-            "confidence": null
-        },
-        {
-            "id": "W",
-            "label": "Pieces_03",
-            "x": "446.67",
-            "y": "1165.00",
-            "width": "260.00",
-            "height": "56.67",
-            "confidence": null
-        },
-        {
-            "id": "X",
-            "label": "Product_03",
-            "x": "888.33",
-            "y": "1161.67",
-            "width": "543.33",
-            "height": "50.00",
-            "confidence": null
-        },
-        {
-            "id": "Y",
-            "label": "Tarif_number_03",
-            "x": "1318.33",
-            "y": "1166.67",
-            "width": "270.00",
-            "height": "53.33",
-            "confidence": null
-        },
-        {
-            "id": "Z",
-            "label": "Stems_03",
-            "x": "1781.67",
-            "y": "1158.33",
-            "width": "143.33",
-            "height": "50.00",
-            "confidence": null
-        },
-        {
-            "id": "a",
-            "label": "Unit_price_03",
-            "x": "1985.00",
-            "y": "1158.33",
-            "width": "203.33",
-            "height": "50.00",
-            "confidence": null
-        },
-        {
-            "id": "b",
-            "label": "Extended_price_03",
-            "x": "2216.67",
-            "y": "1158.33",
-            "width": "226.67",
-            "height": "43.33",
-            "confidence": null
-        },
-        {
-            "id": "c",
-            "label": "Forwarder",
-            "x": "1786.67",
-            "y": "1486.67",
-            "width": "1086.67",
-            "height": "426.67",
-            "confidence": null
         }
     ],
     "height": 3509,
-    "key": "pagina_1.jpg",
     "width": 2480
 }

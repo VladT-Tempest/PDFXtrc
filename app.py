@@ -94,4 +94,4 @@ def crear_interfaz():
 
 if __name__ == "__main__":
     demo = crear_interfaz()
-    demo.launch(share=False)
+    demo.launch(share=True)

@@ -1,42 +1,97 @@
-from pdf2image import   convert_from_path
-from PIL import Image   
-import pytesseract
 import gradio as gr
 import os
+import tempfile
+from pdf2image import convert_from_path
+import logging
+from commercial_invoice import process_invoice_batch, logger
 
-def procesar_pdf(pdf_archivo):
-    # Cear la carpeta "invoices" si no  existe
-    carpeta_salida = "invoices"
-    if not os.path.exists(carpeta_salida):
-        os.makedirs(carpeta_salida)
+def procesar_pdf(pdf_path):
+    """Procesa un archivo PDF y extrae información de las facturas"""
+    try:
+        # Crear directorio temporal para las imágenes
+        with tempfile.TemporaryDirectory() as temp_dir:
+            logger.info(f"Convirtiendo PDF a imágenes: {pdf_path}")
+            
+            # Convertir PDF a imágenes
+            images = convert_from_path(pdf_path)
+            image_paths = []
+            
+            # Guardar imágenes temporalmente
+            for i, image in enumerate(images):
+                image_path = os.path.join(temp_dir, f'pagina_{i+1}.jpg')
+                image.save(image_path, 'JPEG')
+                image_paths.append(image_path)
+            
+            logger.info(f"Se generaron {len(image_paths)} imágenes")
+            
+            # Procesar las imágenes
+            coordinates_json = "./coordinates_CI.json"
+            results_df = process_invoice_batch(image_paths, coordinates_json)
+            
+            # Guardar resultados
+            output_dir = "./data"
+            os.makedirs(output_dir, exist_ok=True)
+            csv_path = os.path.join(output_dir, 'facturas_procesadas.csv')
+            results_df.to_csv(csv_path, index=False)
+            
+            # Preparar mensaje de resultados
+            mensaje = f"Procesamiento completado:\n"
+            mensaje += f"- Páginas procesadas: {len(image_paths)}\n"
+            mensaje += f"- Campos extraídos: {len(results_df.columns)-1}\n"
+            mensaje += f"- Archivo guardado: {csv_path}\n"
+            
+            return mensaje
+            
+    except Exception as e:
+        error_msg = f"Error durante el procesamiento: {str(e)}"
+        logger.error(error_msg)
+        return error_msg
 
-    # Si en carpeta_salida ya hay archivos, eliminarlos
-    for archivo in os.listdir(carpeta_salida):
-        archivo_path = os.path.join(carpeta_salida, archivo)
-        if os.path.isfile(archivo_path):
-            os.remove(archivo_path)
+# Configurar interfaz Gradio..
 
-    # Convertir el PDF a imágenes
-    paginas = convert_from_path(pdf_archivo, dpi=300)
+def crear_interfaz():
+    with gr.Blocks() as demo:
+        gr.Markdown("# Extractor de Información de Facturas")
+        
+        with gr.Row():
+            pdf_input = gr.File(label="Cargar PDF")
+        
+        with gr.Row():
+            procesar_btn = gr.Button("Procesar PDF")
+        
+        with gr.Row():
+            output_text = gr.Textbox(
+                label="Resultados", 
+                lines=10,
+                placeholder="Los resultados del procesamiento aparecerán aquí..."
+            )
+        
+        with gr.Row():
+            csv_output = gr.File(
+                label="Descargar CSV",
+                interactive=False,
+                visible=False
+            )
+        
+        def process_and_return(pdf_path):
+            message = procesar_pdf(pdf_path)
+            csv_path = "./data/facturas_procesadas.csv"
+            return message, csv_path if os.path.exists(csv_path) else None
+        
+        procesar_btn.click(
+            fn=process_and_return,
+            inputs=[pdf_input],
+            outputs=[output_text, csv_output],
+            show_progress=True
+        ).then(
+            lambda: gr.update(visible=True),
+            None,
+            [csv_output]
+        )
     
-    archivos_jpg = []
-    
-    for i, pagina in enumerate(paginas):
-        # Guardar cada página como imagen JPG
-        archivo_jpg = os.path.join(carpeta_salida, f"pagina_{i + 1}.jpg")
-        pagina.save(archivo_jpg, "JPEG")
-        archivos_jpg.append(archivo_jpg)    
+    return demo
 
-    return f"PDF procesado. Las imágenes se guardaron en la carpeta '{carpeta_salida}'", archivos_jpg
-
-interfaz = gr.Interface(
-    fn=procesar_pdf,
-    inputs=gr.File(label="Selecciona un archivo PDF"),
-    outputs="text",
-    title="Commercial Invoice data extraction",
-    description="Takes a PDF file with commercial invoices and converts it to JPG images, then extracts the data from the images.",
-    theme="default"
-)
 
 if __name__ == "__main__":
-    interfaz.launch()
+    demo = crear_interfaz()
+    demo.launch(share=False)

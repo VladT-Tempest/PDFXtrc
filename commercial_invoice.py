@@ -69,7 +69,7 @@ def extract_text_from_area(image, area, margin=10):
         logger.error(f"Error al extraer texto: {str(e)}")
         return ""
 
-def process_invoice(image_path, coordinates_json, margin=10):
+def process_invoice(image_path, coordinates_json, margin=5):
     """Procesa la factura y extrae los campos con margen de tolerancia"""
     logger.info(f"Procesando factura: {image_path}")
     try:
@@ -106,42 +106,49 @@ def process_invoice(image_path, coordinates_json, margin=10):
         logger.error(f"Error procesando factura {image_path}: {str(e)}")
         return {'filename': os.path.basename(image_path)}
 
-if __name__ == "__main__":
-    logger.info("Iniciando procesamiento de facturas")
+def process_invoice_batch(image_paths, coordinates_json, margin=5):
+    """Procesa un lote de imágenes de facturas"""
+    logger.info(f"Iniciando procesamiento de {len(image_paths)} facturas")
     
-    # Configurar directorios
-    invoice_dir = "./invoices"
-    data_dir = "./data"
-    coordinates_json = "./coordinates_CI.json"
+    all_results = []
+    for image_path in image_paths:
+        results = process_invoice(image_path, coordinates_json, margin)
+        all_results.append(results)
     
-    # Crear directorio data si no existe
+    # Crear DataFrame con resultados
+    df = pd.DataFrame(all_results)
+    
+    # Reordenar columnas
+    if not df.empty and 'filename' in df.columns:
+        cols = ['filename'] + [col for col in df.columns if col != 'filename']
+        df = df[cols]
+    
+    return df
+
+def main(invoice_dir="./invoices", data_dir="./data", coordinates_json="./coordinates_CI.json"):
+    """Función principal para ejecutar el procesamiento por lotes"""
     Path(data_dir).mkdir(parents=True, exist_ok=True)
     logger.debug(f"Directorio de datos creado: {data_dir}")
     
-    # Lista para almacenar los resultados de todas las facturas
-    all_results = []
+    # Obtener lista de imágenes
+    image_paths = [
+        os.path.join(invoice_dir, f) 
+        for f in os.listdir(invoice_dir) 
+        if f.endswith(('.jpg', '.jpeg', '.png'))
+    ]
     
-    # Procesar todas las imágenes en el directorio
-    total_files = len([f for f in os.listdir(invoice_dir) 
-                      if f.endswith(('.jpg', '.jpeg', '.png'))])
-    logger.info(f"Se encontraron {total_files} archivos para procesar")
+    logger.info(f"Se encontraron {len(image_paths)} archivos para procesar")
     
-    for filename in os.listdir(invoice_dir):
-        if filename.endswith(('.jpg', '.jpeg', '.png')):
-            image_path = os.path.join(invoice_dir, filename)
-            results = process_invoice(image_path, coordinates_json, margin=5)
-            all_results.append(results)
+    # Procesar imágenes
+    df = process_invoice_batch(image_paths, coordinates_json)
     
-    # Crear DataFrame con todos los resultados
-    df = pd.DataFrame(all_results)
+    # Guardar resultados
+    if not df.empty:
+        csv_path = os.path.join(data_dir, 'ci_data.csv')
+        df.to_csv(csv_path, index=False)
+        logger.info(f"Resultados guardados en: {csv_path}")
     
-    # Reordenar columnas (filename al inicio)
-    cols = ['filename'] + [col for col in df.columns if col != 'filename']
-    df = df[cols]
-    
-    # Guardar resultados en CSV
-    csv_path = os.path.join(data_dir, 'ci_data.csv')
-    df.to_csv(csv_path, index=False)
-    
-    logger.info(f"Proceso completado. Resultados guardados en: {csv_path}")
-    logger.info(f"Total de facturas procesadas: {len(all_results)}")
+    return df
+
+if __name__ == "__main__":
+    main()

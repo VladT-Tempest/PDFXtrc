@@ -25,7 +25,7 @@ def test_single_invoice():
     """Prueba la extracción de campos en una sola factura"""
     try:
         # Rutas de archivos
-        image_path = "./invoices/pagina_1.jpg"
+        image_path = "./invoices/pagina_24.jpg"
         json_path = "./coordinates_CI.json"
 
         # Cargar imagen

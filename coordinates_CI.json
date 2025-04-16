@@ -144,69 +144,163 @@
             "height": "46.67",
             "confidence": null
         },
+
+
         {
             "id": "H",
-            "label": "Boxes_01",
-            "x": "210.00",
-            "y": "1048.33",
-            "width": "180.00",
-            "height": "56.67",
+            "label": "Product_line_1",
+            "x": "827.0",
+            "y": "1049.0",
+            "width": "3000.0",
+            "height": "25.00",
             "confidence": null
         },
         {
             "id": "I",
-            "label": "Pieces_01",
-            "x": "448.33",
-            "y": "1050.00",
-            "width": "256.67",
-            "height": "53.33",
+            "label": "Product_line_2",
+            "x": "827.50",
+            "y": "1091.83",
+            "width": "3000.00",
+            "height": "25.00",
             "confidence": null
         },
         {
             "id": "J",
-            "label": "Product_01",
-            "x": "881.67",
-            "y": "1048.33",
-            "width": "536.67",
-            "height": "56.67",
+            "label": "Product_line_3",
+            "x": "827.00",
+            "y": "1130.0",
+            "width": "3000.0",
+            "height": "25.00",
             "confidence": null
         },
         {
             "id": "K",
-            "label": "Tariff_number_01",
-            "x": "1318.33",
-            "y": "1048.33",
-            "width": "283.33",
-            "height": "60.00",
+            "label": "Product_line_4",
+            "x": "827.00",
+            "y": "1169.0",
+            "width": "3000.0",
+            "height": "25.00",
             "confidence": null
         },
         {
             "id": "L",
-            "label": "Stems_01",
-            "x": "1775.00",
-            "y": "1048.33",
-            "width": "130.00",
-            "height": "56.67",
+            "label": "Product_line_5",
+            "x": "827.00",
+            "y": "1214.0",
+            "width": "3000.00",
+            "height": "25.00",
             "confidence": null
         },
         {
             "id": "M",
-            "label": "Unit_price_01",
-            "x": "1980.00",
-            "y": "1048.33",
-            "width": "186.67",
-            "height": "50.00",
+            "label": "Product_line_6",
+            "x": "827.00",
+            "y": "1254.0",
+            "width": "3000.0",
+            "height": "25.0",
             "confidence": null
         },
         {
             "id": "N",
-            "label": "Extended_price_01",
-            "x": "2210.00",
-            "y": "1051.67",
-            "width": "206.67",
-            "height": "50.00",
+            "label": "Product_line_7",
+            "x": "827.00",
+            "y": "1300.0",
+            "width": "3000.0",
+            "height": "25.0",
+            "confidence": null
+        },
+        {
+            "id": "O",
+            "label": "Product_line_8",
+            "x": "827.0",
+            "y": "1342.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "P",
+            "label": "Product_line_9",
+            "x": "827.0",
+            "y": "1384.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "Q",
+            "label": "Product_line_10",
+            "x": "827.0",
+            "y": "1426.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "R",
+            "label": "Product_line_11",
+            "x": "827.0",
+            "y": "1468.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+
+        {
+            "id": "S",
+            "label": "Product_line_12",
+            "x": "827.0",
+            "y": "1510.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "T",
+            "label": "Product_line_13",
+            "x": "827.0",
+            "y": "1552.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "U",
+            "label": "Product_line_14",
+            "x": "827.0",
+            "y": "1594.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "V",
+            "label": "Product_line_15",
+            "x": "827.0",
+            "y": "1636",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "W",
+            "label": "Product_line_16",
+            "x": "827.0",
+            "y": "1678.0",
+            "width": "3000.0",
+            "height": "25.00",
+            "confidence": null
+        },
+        {
+            "id": "X",
+            "label": "Product_line_17",
+            "x": "827.0",
+            "y": "1720.0",
+            "width": "3000.0",
+            "height": "25.00",
             "confidence": null
         }
+
     ],
     "height": 3509,
     "width": 2480

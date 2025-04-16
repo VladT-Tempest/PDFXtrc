@@ -1,72 +1,60 @@
-import json
-from PIL import Image
-import pytesseract
+import os
+from commercial_invoice import process_invoice
+import logging
 
-def extract_text_from_area(image, area, margin=5):
-    """Extrae texto de un área específica de la imagen"""
+def get_line_number(item):
+    """Extrae el número de línea del campo Product_line_X"""
+    return int(item[0].split('_')[-1])
+
+def test_single_invoice(pagina:str):
+    # Configurar logging más detallado
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(name)s - %(message)s'
+    )
+    logger = logging.getLogger(__name__)
+
+    # Definir rutas
+    invoice_path = os.path.join("invoices", pagina)
+    coordinates_json = "coordinates_CI.json"
+
+    # Verificar que existe el archivo
+    if not os.path.exists(invoice_path):
+        logger.error(f"No se encontró el archivo: {invoice_path}")
+        return
+
+    # Procesar la factura
+    logger.info("Iniciando prueba con factura individual...")
     try:
-        # Aplicar margen a las coordenadas
-        x1 = max(0, area["x1"] - margin)
-        y1 = max(0, area["y1"] - margin)
-        x2 = min(image.width, area["x2"] + margin)
-        y2 = min(image.height, area["y2"] + margin)
+        results = process_invoice(invoice_path, coordinates_json, margin=5)
 
-        # Recortar la imagen al área especificada
-        crop = image.crop((x1, y1, x2, y2))
-
-        # Configurar OCR
-        custom_config = r'--oem 3 --psm 6'
-        return pytesseract.image_to_string(crop, lang='eng', config=custom_config).strip()
-    except Exception as e:
-        print(f"Error al extraer texto: {str(e)}")
-        return ""
-
-def test_single_invoice():
-    """Prueba la extracción de campos en una sola factura"""
-    try:
-        # Rutas de archivos
-        image_path = "./invoices/pagina_24.jpg"
-        json_path = "./coordinates_CI.json"
-
-        # Cargar imagen
-        print(f"\nProcesando imagen: {image_path}")
-        image = Image.open(image_path)
-
-        # Cargar coordenadas
-        print("Cargando coordenadas...")
-        with open(json_path, 'r') as f:
-            data = json.load(f)
+        # Mostrar resultados
+        logger.info("\n=== RESULTADOS DE LA EXTRACCIÓN ===")
+        
+        # Primero mostrar campos generales
+        logger.info("\n--- CAMPOS GENERALES ---")
+        for field, value in sorted(results.items()):
+            if not field.startswith("Product_line_"):
+                logger.info(f"{field}: '{value}'")
+        
+        # Encontrar la última línea válida (la que está antes de la línea horizontal)
+        max_valid_line = 0
+        product_lines = [(k,v) for k,v in results.items() if k.startswith("Product_line_")]
+        product_lines.sort(key=lambda x: int(x[0].split('_')[-1]))
+        
+        for field, _ in product_lines:
+            line_num = int(field.split('_')[-1])
+            if line_num > max_valid_line:
+                max_valid_line = line_num
+                
+        logger.info("\n--- LÍNEAS DE PRODUCTO ---")
+        for field, value in product_lines:
+            line_num = int(field.split('_')[-1])
+            if line_num <= max_valid_line:
+                logger.info(f"{field}: '{value}' <-- PRODUCTO #{line_num}")
             
-        # Procesar cada campo
-        print("\nCampos encontrados:")
-        print("-" * 50)
-
-        for box in data['boxes']:
-            # Calcular coordenadas
-            x = float(box['x'])
-            y = float(box['y'])
-            width = float(box['width'])
-            height = float(box['height'])
-
-            area = {
-                "x1": int(x - width/2),
-                "y1": int(y - height/2),
-                "x2": int(x + width/2),
-                "y2": int(y + height/2)
-            }
-
-            # Extraer texto
-            text = extract_text_from_area(image, area)
-            if text:
-                print(f"{box['label']}: {text}")
-
-                  
-
-
-    except FileNotFoundError:
-        print("Error: No se encontró el archivo de imagen o coordenadas")
     except Exception as e:
-        print(f"Error inesperado: {str(e)}")
+        logger.error(f"Error en la prueba: {str(e)}", exc_info=True)
 
 if __name__ == "__main__":
-    test_single_invoice()
+    test_single_invoice("pagina_1.jpg")

@@ -57,4 +57,4 @@ def test_single_invoice(pagina:str):
         logger.error(f"Error en la prueba: {str(e)}", exc_info=True)
 
 if __name__ == "__main__":
-    test_single_invoice("pagina_1.jpg")
+    test_single_invoice("pagina_2.jpg")

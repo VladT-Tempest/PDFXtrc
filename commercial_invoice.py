@@ -58,7 +58,7 @@ def is_horizontal_line(image_crop):
     row_sums = np.sum(detected_lines > 0, axis=1)
     max_continuous_line = np.max(row_sums) if row_sums.size > 0 else 0
     
-    # Una línea continua debe ocupar al menos el 80% del ancho
+    # Una línea continua debe ocupar al menos el 60% del ancho
     threshold = binary.shape[1] * 0.6
     
     logger.debug(f"Línea más larga detectada: {max_continuous_line} píxeles de {binary.shape[1]}")

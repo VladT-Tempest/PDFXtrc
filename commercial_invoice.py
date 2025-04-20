@@ -31,18 +31,6 @@ def is_product_header(text):
 def is_horizontal_line(image_crop):
     """
     Detecta si una imagen contiene una línea horizontal
-    
-    Args:
-        image_crop: Imagen recortada del área a analizar
-        
-    Returns:
-        bool: True si se detecta una línea horizontal, False en caso contrario
-        
-    Notas:
-        - Se considera una línea horizontal si al menos el 60% del ancho 
-          contiene píxeles de línea continuos
-        - Este umbral (0.6) fue determinado empíricamente y funciona bien 
-          con diferentes calidades de escaneo
     """
     # Convertir a escala de grises si no lo está
     gray = cv2.cvtColor(np.array(image_crop), cv2.COLOR_RGB2GRAY)
@@ -51,15 +39,15 @@ def is_horizontal_line(image_crop):
     _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
     
     # Detectar líneas horizontales
-    horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (binary.shape[1]//2, 1))
+    horizontal_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (25, 1))
     detected_lines = cv2.morphologyEx(binary, cv2.MORPH_OPEN, horizontal_kernel)
     
     # Contar líneas horizontales continuas
     row_sums = np.sum(detected_lines > 0, axis=1)
     max_continuous_line = np.max(row_sums) if row_sums.size > 0 else 0
     
-    # Una línea continua debe ocupar al menos el 60% del ancho
-    threshold = binary.shape[1] * 0.6
+    # Una línea continua debe ocupar al menos el 40% del ancho
+    threshold = binary.shape[1] * 0.4
     
     logger.debug(f"Línea más larga detectada: {max_continuous_line} píxeles de {binary.shape[1]}")
     return max_continuous_line > threshold
@@ -121,59 +109,169 @@ def load_field_areas(coordinates_json):
         logger.error(f"Error al cargar coordenadas: {str(e)}")
         raise
 
+def process_product_line(text, invoice_number):
+    """
+    Procesa una línea de producto y retorna un diccionario con los valores extraídos
+    """
+    # Inicializar diccionario con valores vacíos
+    product_data = {
+        "invoice_number": invoice_number,
+        "Boxes": "",
+        "Pieces": "",
+        "Product_code": "",
+        "Product_desc": "",
+        "Tariff_number": "",
+        "Stems": "",
+        "Unit_price": "",
+        "Extended_price": ""
+    }
+    
+    try:
+        # Normalizar el texto para tipos de cajas específicos
+        text = text.replace("HALF BOX", "HALF_BOX").replace("EIGTH BOX (1/8)", "EIGHT_BOX").replace("SIXTEENTH (1/16)", "SIXTEENTH_BOX")
+        
+        # Dividir la línea en partes
+        parts = text.strip().split()
+        
+        if parts:
+            current_idx = 0
+            # Primera parte debe ser número decimal (cantidad de cajas)
+            if any(c.isdigit() for c in parts[0]):
+                product_data["Boxes"] = parts[0]
+                current_idx = 1
+                
+                # Segunda parte es el tipo de caja (QUARTER, HALF_BOX, EIGHT_BOX)
+                if current_idx < len(parts):
+                    product_data["Pieces"] = parts[current_idx]
+                    current_idx += 1
+                
+                # Si hay un tercer valor numérico, capturar
+                if current_idx < len(parts) and parts[current_idx].isdigit():
+                    product_data["Product_code"] = parts[current_idx]  
+                    current_idx += 1
+            
+            # Capturar descripción del producto hasta encontrar código de tarifa
+            product_desc = []
+            while current_idx < len(parts):
+                if re.match(r'\d{4}\.\d{2}\.\d{2}', parts[current_idx]) or \
+                   re.match(r'\d{4}\.\d{2}\.\d{2}\.\d{2}', parts[current_idx]):
+                    break
+                product_desc.append(parts[current_idx])
+                current_idx += 1
+            product_data["Product_desc"] = " ".join(product_desc) if product_desc else ""
+            
+            # Número de tarifa
+            if current_idx < len(parts):
+                if re.match(r'\d{4}\.\d{2}\.\d{2}', parts[current_idx]) or \
+                   re.match(r'\d{4}\.\d{2}\.\d{2}\.\d{2}', parts[current_idx]):
+                    product_data["Tariff_number"] = parts[current_idx]
+                    current_idx += 1
+            
+            # Stems
+            if current_idx < len(parts):
+                stems = parts[current_idx].replace(',', '')
+                if stems.replace('.', '').isdigit():
+                    product_data["Stems"] = stems
+                    current_idx += 1
+            
+            # Unit price
+            if current_idx < len(parts):
+                unit_price = parts[current_idx]
+                if unit_price.replace('.', '').isdigit():
+                    product_data["Unit_price"] = unit_price
+                    current_idx += 1
+            
+            # Extended price
+            if current_idx < len(parts):
+                ext_price = parts[current_idx]
+                if ext_price.replace('.', '').isdigit():
+                    product_data["Extended_price"] = ext_price
+    
+    except Exception as e:
+        logger.error(f"Error procesando línea de producto: {text}")
+        logger.error(str(e))
+    
+    return product_data
+
 def process_invoice(image_path, coordinates_json, margin=5):
     """Procesa la factura y extrae los campos"""
     logger.info(f"Procesando factura: {image_path}")
     try:
         image = Image.open(image_path)
         field_areas, img_width, img_height = load_field_areas(coordinates_json)
-
+        
         # Iniciar con el nombre del archivo
         extracted_fields = {'filename': os.path.basename(image_path)}
+        products_data = []  # Lista para almacenar datos de productos
+        found_total_line = False
+        invoice_number = None
         
         # Ajustar imagen si es necesario
         if image.size != (img_width, img_height):
             image = image.resize((img_width, img_height))
         
-
-        found_total_line = False
-        last_valid_line = 0
-        
-        # Procesar campos generales primero
+        # Procesar campos generales primero (excluyendo Product_line_X)
         for label, area in field_areas.items():
             if not label.startswith("Product_line_"):
                 text = extract_text_from_area(image, area, margin)
                 if text:
                     extracted_fields[label] = text
-                    
+                    if label == "invoice_number":
+                        invoice_number = text
+                        logger.info(f"Número de factura encontrado: {invoice_number}")
+        
         # Procesar líneas de producto hasta encontrar la línea horizontal
-        product_fields = {k: v for k, v in field_areas.items() if k.startswith("Product_line_")}
+        product_fields = {k: v for k, v in field_areas.items() 
+                        if k.startswith("Product_line_")}
+        
         for label, area in sorted(product_fields.items(), 
                                 key=lambda x: int(x[0].split('_')[-1])):
-                                
             if found_total_line:
                 break
-                
+            
             # Verificar si es línea horizontal
             if is_horizontal_line(image.crop((area["x1"], area["y1"], 
                                             area["x2"], area["y2"]))):
                 found_total_line = True
                 logger.debug(f"Línea horizontal detectada en {label}")
                 break
-                
-            # Si no es línea horizontal, extraer texto
+            
+            # Si no es línea horizontal, procesar línea de producto
             text = extract_text_from_area(image, area, margin)
             if text:
-                extracted_fields[label] = text
-                last_valid_line = int(label.split('_')[-1])
-                
-        logger.info(f"Procesamiento completado. Última línea válida: {last_valid_line}")
+                if invoice_number:  # Solo procesar si tenemos número de factura
+                    product_data = process_product_line(text, invoice_number)
+                    if any(product_data.values()):  # Si hay datos válidos
+                        products_data.append(product_data)
+                        logger.debug(f"Línea de producto procesada: {product_data}")
+        
+        # Crear/actualizar DataFrame de productos
+        if products_data:
+            products_df = pd.DataFrame(products_data)
+            csv_path = os.path.join("data", "productos_por_factura.csv")
+            
+            try:
+                # Si el archivo existe, leer los datos existentes
+                if os.path.exists(csv_path):
+                    existing_df = pd.read_csv(csv_path)
+                    # Eliminar registros previos de esta factura si existen
+                    existing_df = existing_df[existing_df["invoice_number"] != invoice_number]
+                    # Concatenar nuevos datos
+                    products_df = pd.concat([existing_df, products_df], ignore_index=True)
+            except Exception as e:
+                logger.error(f"Error al leer archivo existente: {str(e)}")
+                # Si hay error al leer, continuar con los nuevos datos
+            
+            # Guardar DataFrame actualizado
+            products_df.to_csv(csv_path, index=False)
+            logger.info(f"Productos agregados al archivo: {csv_path}")
+        
         return extracted_fields
         
     except Exception as e:
         logger.error(f"Error procesando factura {image_path}: {str(e)}")
         return {'filename': os.path.basename(image_path)}
-        
+
 def process_invoice_batch(image_paths, coordinates_json, margin=5):
     """Procesa un lote de facturas"""
     logger.info(f"Iniciando procesamiento de {len(image_paths)} facturas")

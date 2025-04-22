@@ -20,13 +20,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def is_product_header(text):
-    """Detecta si es la línea de encabezado de productos"""
-    header_keywords = ['boxes', 'pieces', 'product', 'tariff', 'bunches', 'stems', 'unit', 'price']
-    if text:
-        text_lower = text.lower()
-        return all(keyword in text_lower for keyword in header_keywords)
-    return False
 
 def is_horizontal_line(image_crop):
     """

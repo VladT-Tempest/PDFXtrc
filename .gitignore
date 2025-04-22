@@ -15,3 +15,5 @@ invoices/
 # archivos de resultados
 data/
 
+# archivos de prueba
+test.py

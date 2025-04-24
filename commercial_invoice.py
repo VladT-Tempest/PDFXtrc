@@ -173,14 +173,14 @@ def process_product_line(text, invoice_number):
             
             # Unit price
             if current_idx < len(parts):
-                unit_price = parts[current_idx]
+                unit_price = parts[current_idx].replace(',', '')
                 if unit_price.replace('.', '').isdigit():
                     product_data["Unit_price"] = unit_price
                     current_idx += 1
             
             # Extended price
             if current_idx < len(parts):
-                ext_price = parts[current_idx]
+                ext_price = parts[current_idx].replace(',', '')
                 if ext_price.replace('.', '').isdigit():
                     product_data["Extended_price"] = ext_price
     
@@ -272,7 +272,7 @@ def process_invoice_batch(image_paths, coordinates_json):
     
     # Inicializar DataFrames vacíos al inicio del proceso por lotes
     products_df = pd.DataFrame(columns=[
-        "invoice_number", "Boxes", "Pieces", "Product_desc", 
+        "invoice_number", "Boxes", "Pieces", "Product_code", "Product_desc", 
         "Tariff_number", "Stems", "Unit_price", "Extended_price"
     ])
     facturas_df = pd.DataFrame()

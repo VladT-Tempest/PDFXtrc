@@ -151,7 +151,11 @@ def process_product_line(text, invoice_number):
                     break
                 product_desc.append(parts[current_idx])
                 current_idx += 1
-            product_data["Product_desc"] = " ".join(product_desc) if product_desc else ""
+            
+            # Unir la descripción y limpiar caracteres no alfanuméricos del inicio
+            raw_desc = " ".join(product_desc) if product_desc else ""
+            cleaned_desc = re.sub(r'^[^a-zA-Z0-9]+', '', raw_desc).strip()
+            product_data["Product_desc"] = cleaned_desc
             
             # Número de tarifa
             if current_idx < len(parts):

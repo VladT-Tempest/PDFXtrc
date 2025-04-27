@@ -1,0 +1,60 @@
+{
+    "boxes": [
+        {
+            "id": "1",
+            "label": "Shipper_name",
+            "x": "590.00",
+            "y": "155.00",
+            "width": "900.00",
+            "height": "60.00",
+            "confidence": null
+        },
+        {
+            "id": "2",
+            "label": "hawb_number",
+            "x": "1396.00",
+            "y": "163.00",
+            "width": "190.00",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "3",
+            "label": "hawb_date",
+            "x": "2162.00",
+            "y": "231.00",
+            "width": "180.00",
+            "height": "62.00",
+            "confidence": null
+        },
+        {
+            "id": "4",
+            "label": "number_pieces",
+            "x": "196.00",
+            "y": "1592.00",
+            "width": "110.00",
+            "height": "50.00",
+            "confidence": null
+        },
+        {
+            "id": "5",
+            "label": "gross_weight",
+            "x": "500.00",
+            "y": "1592.00",
+            "width": "130.00",
+            "height": "62.00",
+            "confidence": null
+        },
+        {
+            "id": "6",
+            "label": "kg_lb",
+            "x": "716.00",
+            "y": "1592.00",
+            "width": "50.00",
+            "height": "62.00",
+            "confidence": null
+        }
+    ],
+    "height": 3509,
+    "width": 2480
+}

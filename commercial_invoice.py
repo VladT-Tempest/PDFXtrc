@@ -20,13 +20,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def is_product_header(text):
-    """Detecta si es la línea de encabezado de productos"""
-    header_keywords = ['boxes', 'pieces', 'product', 'tariff', 'bunches', 'stems', 'unit', 'price']
-    if text:
-        text_lower = text.lower()
-        return all(keyword in text_lower for keyword in header_keywords)
-    return False
 
 def is_horizontal_line(image_crop):
     """
@@ -158,7 +151,11 @@ def process_product_line(text, invoice_number):
                     break
                 product_desc.append(parts[current_idx])
                 current_idx += 1
-            product_data["Product_desc"] = " ".join(product_desc) if product_desc else ""
+            
+            # Unir la descripción y limpiar caracteres no alfanuméricos del inicio
+            raw_desc = " ".join(product_desc) if product_desc else ""
+            cleaned_desc = re.sub(r'^[^a-zA-Z0-9]+', '', raw_desc).strip()
+            product_data["Product_desc"] = cleaned_desc
             
             # Número de tarifa
             if current_idx < len(parts):
@@ -176,14 +173,14 @@ def process_product_line(text, invoice_number):
             
             # Unit price
             if current_idx < len(parts):
-                unit_price = parts[current_idx]
+                unit_price = parts[current_idx].replace(',', '')
                 if unit_price.replace('.', '').isdigit():
                     product_data["Unit_price"] = unit_price
                     current_idx += 1
             
             # Extended price
             if current_idx < len(parts):
-                ext_price = parts[current_idx]
+                ext_price = parts[current_idx].replace(',', '')
                 if ext_price.replace('.', '').isdigit():
                     product_data["Extended_price"] = ext_price
     
@@ -245,26 +242,23 @@ def process_invoice(image_path, coordinates_json, margin=5):
                         products_data.append(product_data)
                         logger.debug(f"Línea de producto procesada: {product_data}")
         
-        # Crear/actualizar DataFrame de productos
+        # Guardar productos si hay datos nuevos
         if products_data:
-            products_df = pd.DataFrame(products_data)
+            new_products_df = pd.DataFrame(products_data)
             csv_path = os.path.join("data", "productos_por_factura.csv")
             
             try:
-                # Si el archivo existe, leer los datos existentes
-                if os.path.exists(csv_path):
-                    existing_df = pd.read_csv(csv_path)
-                    # Eliminar registros previos de esta factura si existen
-                    existing_df = existing_df[existing_df["invoice_number"] != invoice_number]
-                    # Concatenar nuevos datos
-                    products_df = pd.concat([existing_df, products_df], ignore_index=True)
+                # Leer archivo existente
+                existing_df = pd.read_csv(csv_path)
+                # Agregar nuevos datos
+                updated_df = pd.concat([existing_df, new_products_df], ignore_index=True)
+                # Guardar todo en el archivo
+                updated_df.to_csv(csv_path, index=False)
+                logger.info(f"Productos agregados al archivo: {csv_path}")
             except Exception as e:
-                logger.error(f"Error al leer archivo existente: {str(e)}")
-                # Si hay error al leer, continuar con los nuevos datos
-            
-            # Guardar DataFrame actualizado
-            products_df.to_csv(csv_path, index=False)
-            logger.info(f"Productos agregados al archivo: {csv_path}")
+                logger.error(f"Error al actualizar archivo de productos: {str(e)}")
+                # Si hay error, intentar guardar solo los nuevos datos
+                new_products_df.to_csv(csv_path, mode='a', header=False, index=False)
         
         return extracted_fields
         
@@ -272,22 +266,39 @@ def process_invoice(image_path, coordinates_json, margin=5):
         logger.error(f"Error procesando factura {image_path}: {str(e)}")
         return {'filename': os.path.basename(image_path)}
 
-def process_invoice_batch(image_paths, coordinates_json, margin=5):
-    """Procesa un lote de facturas"""
+def process_invoice_batch(image_paths, coordinates_json):
+    """Procesa un lote de imágenes de facturas"""
     logger.info(f"Iniciando procesamiento de {len(image_paths)} facturas")
     
-    all_results = []
+    # Inicializar DataFrames vacíos al inicio del proceso por lotes
+    products_df = pd.DataFrame(columns=[
+        "invoice_number", "Boxes", "Pieces", "Product_code", "Product_desc", 
+        "Tariff_number", "Stems", "Unit_price", "Extended_price"
+    ])
+    facturas_df = pd.DataFrame()
+    
+    # Crear archivos vacíos al inicio del proceso
+    output_dir = "data"
+    os.makedirs(output_dir, exist_ok=True)
+    products_csv_path = os.path.join(output_dir, "productos_por_factura.csv")
+    facturas_csv_path = os.path.join(output_dir, "facturas_procesadas.csv")
+    products_df.to_csv(products_csv_path, index=False)
+    facturas_df.to_csv(facturas_csv_path, index=False)
+    
+    results = []
     for image_path in image_paths:
-        results = process_invoice(image_path, coordinates_json, margin)
-        all_results.append(results)
-    
-    df = pd.DataFrame(all_results)
-    
-    # Reordenar columnas
-    if not df.empty and 'filename' in df.columns:
-        cols = ['filename'] + [col for col in df.columns if col != 'filename']
-        df = df[cols]
-    
+        try:
+            result = process_invoice(image_path, coordinates_json)
+            if result:
+                results.append(result)
+        except Exception as e:
+            logger.error(f"Error procesando {image_path}: {str(e)}")
+            results.append({'filename': os.path.basename(image_path)})
+
+    df = pd.DataFrame(results)
+    if not df.empty:
+        df.to_csv(facturas_csv_path, index=False)
+        logger.info(f"Resultados guardados en: {facturas_csv_path}")
     return df
 
 def main(invoice_dir="./invoices", data_dir="./data", coordinates_json="./coordinates_CI.json"):

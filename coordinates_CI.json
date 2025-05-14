@@ -151,16 +151,16 @@
             "label": "Product_line_1",
             "x": "827.0",
             "y": "1049.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
         {
             "id": "I",
             "label": "Product_line_2",
-            "x": "827.50",
+            "x": "827.00",
             "y": "1091.83",
-            "width": "3000.00",
+            "width": "3100.00",
             "height": "27.00",
             "confidence": null
         },
@@ -169,7 +169,7 @@
             "label": "Product_line_3",
             "x": "827.00",
             "y": "1130.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -178,7 +178,7 @@
             "label": "Product_line_4",
             "x": "827.00",
             "y": "1170.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -187,7 +187,7 @@
             "label": "Product_line_5",
             "x": "827.00",
             "y": "1214.0",
-            "width": "3000.00",
+            "width": "3100.00",
             "height": "27.00",
             "confidence": null
         },
@@ -196,7 +196,7 @@
             "label": "Product_line_6",
             "x": "827.00",
             "y": "1254.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -205,7 +205,7 @@
             "label": "Product_line_7",
             "x": "827.00",
             "y": "1300.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -214,7 +214,7 @@
             "label": "Product_line_8",
             "x": "827.0",
             "y": "1342.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -223,7 +223,7 @@
             "label": "Product_line_9",
             "x": "827.0",
             "y": "1384.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -232,7 +232,7 @@
             "label": "Product_line_10",
             "x": "827.0",
             "y": "1426.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -241,7 +241,7 @@
             "label": "Product_line_11",
             "x": "827.0",
             "y": "1468.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -251,7 +251,7 @@
             "label": "Product_line_12",
             "x": "827.0",
             "y": "1510.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -260,7 +260,7 @@
             "label": "Product_line_13",
             "x": "827.0",
             "y": "1552.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -269,7 +269,7 @@
             "label": "Product_line_14",
             "x": "827.0",
             "y": "1594.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -278,7 +278,7 @@
             "label": "Product_line_15",
             "x": "827.0",
             "y": "1636",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -287,7 +287,7 @@
             "label": "Product_line_16",
             "x": "827.0",
             "y": "1678.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         },
@@ -296,7 +296,7 @@
             "label": "Product_line_17",
             "x": "827.0",
             "y": "1720.0",
-            "width": "3000.0",
+            "width": "3100.0",
             "height": "27.00",
             "confidence": null
         }

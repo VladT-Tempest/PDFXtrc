@@ -2,7 +2,7 @@ import os
 from commercial_invoice import process_invoice
 
 def test_single_invoice():
-    invoice_path = os.path.join("invoices", "pagina_5.jpg")
+    invoice_path = os.path.join("invoices", "pagina_9.jpg")
     coordinates_json = "coordinates_CI.json"
 
     print("Iniciando prueba con factura individual...")
